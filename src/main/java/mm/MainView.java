@@ -1,17 +1,25 @@
 package mm;
 
+import com.restfb.DefaultFacebookClient;
+import com.restfb.Version;
+
 import javafx.application.Application;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
+import mm.FacebookUtils.FacebookOauth;
+import mm.FacebookUtils.LoggedInFacebookClient;
+import mm.Scenes.ConversationSelect;
 
 public class MainView extends Application {
 
   @Override
-  public void start(Stage primaryStage) throws Exception {
-    
+  public void start(Stage stage) throws Exception {
+    stage.show();
     String appId = getParameters().getRaw().get(0);
     String appSecret = getParameters().getRaw().get(1);
-    FacebookOauth.oAuth(primaryStage, appId, appSecret);
-
+    FacebookOauth.oAuth(stage, appId, appSecret);
+    //If token is null user has not logged in
+   // LoggedInFacebookClient client = new LoggedInFacebookClient(appId, appSecret);
   }
 
   public static void startApp(String[] args) {

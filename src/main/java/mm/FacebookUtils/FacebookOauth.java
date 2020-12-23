@@ -1,4 +1,4 @@
-package mm;
+package mm.FacebookUtils;
 
 import com.restfb.DefaultFacebookClient;
 import com.restfb.Version;
@@ -6,16 +6,20 @@ import com.restfb.FacebookClient.AccessToken;
 import com.restfb.scope.ScopeBuilder;
 
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import mm.Scenes.ConversationSelect;
+
 import static com.restfb.logging.RestFBLogger.CLIENT_LOGGER;
 
 public class FacebookOauth {
   private static final String SUCCESS_URL = "https://www.facebook.com/connect/login_success.html";
+  public static AccessToken userAccessToken = new AccessToken();
 
   public static void oAuth(Stage stage, String appId, String appSecret) {
     // parse arguments
@@ -43,11 +47,11 @@ public class FacebookOauth {
         AccessToken accessToken = facebookClient.obtainUserAccessToken(appId, appSecret, SUCCESS_URL, code);
 
         // trigger further code's execution
-        consumeAccessToken(accessToken);
+        //consumeAccessToken(accessToken);
+        DefaultFacebookClient client = new DefaultFacebookClient(accessToken.getAccessToken(), appSecret, Version.LATEST);
+        stage.setScene(new ConversationSelect(new ScrollPane(), stage, client, appSecret));
 
-        // close the app as goal was reached
-        stage.close();
-
+        
       } else if ("https://www.facebook.com/dialog/close".equals(newValue)) {
         throw new IllegalStateException("dialog closed");
       }
